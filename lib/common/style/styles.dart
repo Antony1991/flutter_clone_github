@@ -19,4 +19,5 @@ class GlobalColors {
   static const Color textWhite = Color(0xFFFFFFFF);
   static const Color miWhite = Color(0xffececec);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color subTextColor = Color(0xff959595);
 }

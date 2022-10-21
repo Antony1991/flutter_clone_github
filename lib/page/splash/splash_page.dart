@@ -9,7 +9,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
 import 'package:flutter_clone_github/redux/state.dart';
+import 'package:flutter_clone_github/router/navigator_utils.dart';
+import 'package:flutter_clone_github/router/router.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import 'package:rive/rive.dart';
 
 class SplashPage extends StatefulWidget {
@@ -32,7 +35,8 @@ class _SplashPageState extends State<SplashPage> {
       return;
     }
     hadInit = true;
-
+    Store<GithubState> store = StoreProvider.of(context);
+    print('****************${store.state.userInfo?.email}');
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         text = "Welcome";
@@ -46,21 +50,27 @@ class _SplashPageState extends State<SplashPage> {
         fontSize = 60;
       });
     });
+    Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
+      NavigatorUtils.pushNamed(context, Routers.login);
+    });
   }
 
+  /// 背景图片
   Widget _buildImage() {
     return Center(child: Image.asset('static/images/welcome.png'));
   }
 
+  /// 标题
   Widget _buildTitle() {
     return Align(
       alignment: const Alignment(0, 0.3),
       child: Text(text,
-          style: const TextStyle(
+          style: TextStyle(
               color: GlobalColors.primaryDarkValue, fontSize: fontSize)),
     );
   }
 
+  /// riv资源
   Widget _buildRiv() {
     return const Align(
       alignment: Alignment(0, 0.9),
