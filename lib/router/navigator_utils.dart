@@ -16,6 +16,10 @@ class NavigatorUtils {
     Navigator.pushReplacementNamed(context, routeName);
   }
 
+  static push(BuildContext context, Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+  }
+
   // 跳转
   static pushNamed(BuildContext context, String routeName) {
     Navigator.pushNamed(context, routeName);

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clone_github/common/service/address.dart';
 import 'package:flutter_clone_github/common/style/icons.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
+import 'package:flutter_clone_github/page/login/login_webview_page.dart';
+import 'package:flutter_clone_github/router/navigator_utils.dart';
 import 'package:flutter_clone_github/widgets/animated_background.dart';
 import 'package:flutter_clone_github/widgets/flex_button.dart';
 import 'package:flutter_clone_github/widgets/icon_input.dart';
@@ -64,9 +67,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
       color: Theme.of(context).primaryColor,
       textColor: GlobalColors.textWhite,
       fontSize: 16,
-      onPress: () {
-        print('--------------');
-      },
+      onPress: oauthLogin,
     ));
   }
 
@@ -165,5 +166,11 @@ mixin LoginBLoC on State<LoginPage> {
   /// 密码改变
   void pwdChange(value) {
     password = pwdController.text;
+  }
+
+  /// 安全登录
+  oauthLogin() async {
+    NavigatorUtils.push(
+        context, LoginWebviewPage(url: Address.getOAuthUrl(), title: '安全登录'));
   }
 }
