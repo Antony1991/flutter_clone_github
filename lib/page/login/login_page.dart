@@ -3,10 +3,12 @@ import 'package:flutter_clone_github/common/service/address.dart';
 import 'package:flutter_clone_github/common/style/icons.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
 import 'package:flutter_clone_github/page/login/login_webview_page.dart';
-import 'package:flutter_clone_github/router/navigator_utils.dart';
+import 'package:flutter_clone_github/redux/actions/user_action.dart';
+import 'package:flutter_clone_github/redux/app_state.dart';
 import 'package:flutter_clone_github/widgets/animated_background.dart';
 import 'package:flutter_clone_github/widgets/flex_button.dart';
 import 'package:flutter_clone_github/widgets/icon_input.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -53,9 +55,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
       color: Theme.of(context).primaryColor,
       textColor: GlobalColors.textWhite,
       fontSize: 16,
-      onPress: () {
-        print('--------------');
-      },
+      onPress: loginIn,
     ));
   }
 
@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
           color: Theme.of(context).primaryColor,
           child: Stack(
             children: [
-              Positioned.fill(child: AnimatedBackground()),
+              const Positioned.fill(child: AnimatedBackground()),
               _buildForm()
             ],
           ),
@@ -168,9 +168,30 @@ mixin LoginBLoC on State<LoginPage> {
     password = pwdController.text;
   }
 
+  // 登录
+  loginIn() async {
+    String username = userController.text;
+    String password = pwdController.text;
+    if (mounted) {
+      var res = await StoreProvider.of<GithubState>(context)
+          .dispatch(LoginAction(username: username, password: password));
+      print("#####$res");
+    }
+  }
+
   /// 安全登录
-  oauthLogin() async {
-    NavigatorUtils.push(
-        context, LoginWebviewPage(url: Address.getOAuthUrl(), title: '安全登录'));
+  Future oauthLogin() async {
+    String? code = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                LoginWebviewPage(url: Address.getOAuthUrl(), title: '安全登录')));
+    print('######code$code');
+    if (code != null && code.isNotEmpty) {
+      if (mounted) {
+        StoreProvider.of<GithubState>(context)
+            .dispatch(LoginSuccessAction(code));
+      }
+    }
   }
 }

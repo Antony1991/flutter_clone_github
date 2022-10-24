@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-19 12:06:30
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-19 12:31:00
+ * @LastEditTime: 2022-10-24 21:47:16
  * @FilePath: /flutter_clone_github/lib/model/user.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,82 +14,18 @@ part 'User.g.dart';
 /// 添加序列化标注
 @JsonSerializable()
 class User {
-  String? login;
-  int? id;
-  String? node_id;
-  String? avatar_url;
-  String? gravatar_id;
-  String? url;
-  String? html_url;
-  String? followers_url;
-  String? following_url;
-  String? gists_url;
-  String? starred_url;
-  String? subscriptions_url;
-  String? organizations_url;
-  String? repos_url;
-  String? events_url;
-  String? received_events_url;
-  String? type;
-  bool? site_admin;
-  String? name;
-  String? company;
-  String? blog;
-  String? location;
-  String? email;
-  String? starred;
-  String? bio;
-  int? public_repos;
-  int? public_gists;
-  int? followers;
-  int? following;
-  DateTime? created_at;
-  DateTime? updated_at;
-  int? private_gists;
-  int? total_private_repos;
-  int? owned_private_repos;
-  int? disk_usage;
-  int? collaborators;
-  bool? two_factor_authentication;
+  String? id;
+  String? nick;
+  String? headurl;
+  String? decs;
+  String? gender;
+  String? followCount;
+  String? fanCount;
+  int? ismember;
+  int? isvertify;
 
-  User(
-      this.login,
-      this.id,
-      this.node_id,
-      this.avatar_url,
-      this.gravatar_id,
-      this.url,
-      this.html_url,
-      this.followers_url,
-      this.following_url,
-      this.gists_url,
-      this.starred_url,
-      this.subscriptions_url,
-      this.organizations_url,
-      this.repos_url,
-      this.events_url,
-      this.received_events_url,
-      this.type,
-      this.site_admin,
-      this.name,
-      this.company,
-      this.blog,
-      this.location,
-      this.email,
-      this.starred,
-      this.bio,
-      this.public_repos,
-      this.public_gists,
-      this.followers,
-      this.following,
-      this.created_at,
-      this.updated_at,
-      this.private_gists,
-      this.total_private_repos,
-      this.owned_private_repos,
-      this.disk_usage,
-      this.collaborators,
-      this.two_factor_authentication);
+  User(this.id, this.nick, this.headurl, this.decs, this.gender,
+      this.followCount, this.fanCount, this.ismember, this.isvertify);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

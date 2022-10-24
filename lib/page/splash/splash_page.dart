@@ -2,13 +2,13 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 16:38:47
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-19 20:08:29
+ * @LastEditTime: 2022-10-24 22:05:14
  * @FilePath: /flutter_clone_github/lib/page/splash/splash_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
-import 'package:flutter_clone_github/redux/state.dart';
+import 'package:flutter_clone_github/redux/app_state.dart';
 import 'package:flutter_clone_github/router/navigator_utils.dart';
 import 'package:flutter_clone_github/router/router.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -36,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
     }
     hadInit = true;
     Store<GithubState> store = StoreProvider.of(context);
-    print('****************${store.state.userInfo?.email}');
+    print('****************${store.state.userInfo?.id}');
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         text = "Welcome";
@@ -51,7 +51,12 @@ class _SplashPageState extends State<SplashPage> {
       });
     });
     Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
-      NavigatorUtils.pushNamed(context, Routers.login);
+      String? id = StoreProvider.of<GithubState>(context).state.userInfo?.id;
+      if (id != null && id.isNotEmpty) {
+        NavigatorUtils.pushNamed(context, Routers.home);
+      } else {
+        NavigatorUtils.pushNamed(context, Routers.login);
+      }
     });
   }
 

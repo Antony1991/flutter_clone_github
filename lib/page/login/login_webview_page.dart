@@ -1,3 +1,11 @@
+/*
+ * @Author: Antony vic19910108@gmail.com
+ * @Date: 2022-10-23 19:40:45
+ * @LastEditors: Antony vic19910108@gmail.com
+ * @LastEditTime: 2022-10-24 09:48:48
+ * @FilePath: /flutter_clone_github/lib/page/login/login_webview_page.dart
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -54,8 +62,8 @@ class _LoginWebviewPageState extends State<LoginWebviewPage> {
             navigationDelegate: (navigation) {
               if (navigation.url.startsWith('gsygithubapp://authed')) {
                 var code = Uri.parse(navigation.url).queryParameters['code'];
-                print("code ${code}");
-                Navigator.of(context).pop(code);
+                print("code $code");
+                Navigator.pop(context, code);
                 return NavigationDecision.prevent;
               }
               return NavigationDecision.navigate;
