@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 13:38:27
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-18 14:23:19
+ * @LastEditTime: 2022-10-25 23:15:28
  * @FilePath: /flutter_clone_github/lib/page/home/home_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -27,6 +27,7 @@ class _IndexPageState extends State<IndexPage> {
     pageController = PageController(initialPage: _currentPage);
     super.initState();
   }
+
   /// 页面切换时
   void onPageChanged(int page) {
     setState(() {
@@ -38,9 +39,22 @@ class _IndexPageState extends State<IndexPage> {
   void bottomOnTap(int page) {
     pageController.jumpToPage(page);
   }
-  BottomNavigationBarItem _buildNavBottomBarItem(icon, label) {
-    return BottomNavigationBarItem(icon: Icon(icon), label: label);
+
+  BottomNavigationBarItem _buildNavBottomBarItem(icon, activeIcon, label) {
+    return BottomNavigationBarItem(
+        icon: Image.asset(
+          icon,
+          width: 25.0,
+          height: 25.0,
+        ),
+        activeIcon: Image.asset(
+          activeIcon,
+          width: 25.0,
+          height: 25.0,
+        ),
+        label: label);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +65,14 @@ class _IndexPageState extends State<IndexPage> {
         children: const [HomePage(), TrendPage()],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
-        items: [_buildNavBottomBarItem(GlobalIcons.HOME, '首页'), _buildNavBottomBarItem(GlobalIcons.MORE, '更多')],
+        items: [
+          _buildNavBottomBarItem(
+              TabbarIcons.tabbarHome, TabbarIcons.tabbarHomeActive, '首页'),
+          _buildNavBottomBarItem(
+              TabbarIcons.tabbarProfile, TabbarIcons.tabbarProfileActive, '我的')
+        ],
         currentIndex: _currentPage,
         onTap: bottomOnTap,
       ),

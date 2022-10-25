@@ -23,10 +23,14 @@ class FlexButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        style: TextButton.styleFrom(backgroundColor: color),
-        onPressed: () {
-          onPress?.call();
-        },
+        style: onPress != null
+            ? TextButton.styleFrom(backgroundColor: color)
+            : TextButton.styleFrom(),
+        onPressed: onPress != null
+            ? () {
+                onPress?.call();
+              }
+            : null,
         child: Flex(
           mainAxisAlignment: mainAxisAlignment,
           direction: Axis.horizontal,

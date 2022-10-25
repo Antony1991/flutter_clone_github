@@ -2,17 +2,16 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 16:38:47
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-24 22:05:14
+ * @LastEditTime: 2022-10-25 17:47:53
  * @FilePath: /flutter_clone_github/lib/page/splash/splash_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
-import 'package:flutter_clone_github/redux/app_state.dart';
+import 'package:flutter_clone_github/provider/user_provider.dart';
 import 'package:flutter_clone_github/router/navigator_utils.dart';
 import 'package:flutter_clone_github/router/router.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
 class SplashPage extends StatefulWidget {
@@ -35,8 +34,9 @@ class _SplashPageState extends State<SplashPage> {
       return;
     }
     hadInit = true;
-    Store<GithubState> store = StoreProvider.of(context);
-    print('****************${store.state.userInfo?.id}');
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         text = "Welcome";
@@ -51,12 +51,13 @@ class _SplashPageState extends State<SplashPage> {
       });
     });
     Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
-      String? id = StoreProvider.of<GithubState>(context).state.userInfo?.id;
-      if (id != null && id.isNotEmpty) {
-        NavigatorUtils.pushNamed(context, Routers.home);
-      } else {
-        NavigatorUtils.pushNamed(context, Routers.login);
-      }
+      userProvider.initUserInfo().then((value) {
+        if (value != null) {
+          NavigatorUtils.pushNamed(context, Routers.home);
+        } else {
+          NavigatorUtils.pushNamed(context, Routers.login);
+        }
+      });
     });
   }
 
@@ -89,15 +90,13 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GithubState>(builder: (context, store) {
-      return Material(
-        child: Container(
-          color: GlobalColors.white,
-          child: Stack(
-            children: [_buildImage(), _buildTitle(), _buildRiv()],
-          ),
+    return Material(
+      child: Container(
+        color: GlobalColors.white,
+        child: Stack(
+          children: [_buildImage(), _buildTitle(), _buildRiv()],
         ),
-      );
-    });
+      ),
+    );
   }
 }

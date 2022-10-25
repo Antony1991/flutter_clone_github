@@ -3,12 +3,16 @@ import 'package:flutter_clone_github/common/service/address.dart';
 import 'package:flutter_clone_github/common/style/icons.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
 import 'package:flutter_clone_github/page/login/login_webview_page.dart';
+import 'package:flutter_clone_github/provider/user_provider.dart';
 import 'package:flutter_clone_github/redux/actions/user_action.dart';
 import 'package:flutter_clone_github/redux/app_state.dart';
+import 'package:flutter_clone_github/router/navigator_utils.dart';
+import 'package:flutter_clone_github/router/router.dart';
 import 'package:flutter_clone_github/widgets/animated_background.dart';
 import 'package:flutter_clone_github/widgets/flex_button.dart';
 import 'package:flutter_clone_github/widgets/icon_input.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -49,13 +53,14 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
 
   /// 渲染loginInBtn
   Widget _buildLoginInBtn() {
+    print('##btn');
     return Expanded(
         child: FlexButton(
       text: '账号登录',
       color: Theme.of(context).primaryColor,
       textColor: GlobalColors.textWhite,
       fontSize: 16,
-      onPress: loginIn,
+      onPress: userName!.isNotEmpty && password!.isNotEmpty ? loginIn : null,
     ));
   }
 
@@ -67,7 +72,7 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
       color: Theme.of(context).primaryColor,
       textColor: GlobalColors.textWhite,
       fontSize: 16,
-      onPress: oauthLogin,
+      onPress: null,
     ));
   }
 
@@ -158,24 +163,30 @@ mixin LoginBLoC on State<LoginPage> {
   String? userName = '';
   String? password = '';
 
+  bool submitBtnDisabled = true;
+
   /// 用户名改变
   void usernameChange(value) {
-    userName = userController.text;
+    setState(() {
+      userName = userController.text;
+    });
   }
 
   /// 密码改变
   void pwdChange(value) {
-    password = pwdController.text;
+    setState(() {
+      password = pwdController.text;
+    });
   }
 
   // 登录
   loginIn() async {
-    String username = userController.text;
-    String password = pwdController.text;
     if (mounted) {
-      var res = await StoreProvider.of<GithubState>(context)
-          .dispatch(LoginAction(username: username, password: password));
-      print("#####$res");
+      Provider.of<UserProvider>(context, listen: false)
+          .loginIn(userName!, password!)
+          .then((value) {
+        NavigatorUtils.pushNamed(context, Routers.home);
+      });
     }
   }
 
