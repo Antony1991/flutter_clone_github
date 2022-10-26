@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-22 11:01:21
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-25 23:01:20
+ * @LastEditTime: 2022-10-26 22:34:30
  * @FilePath: /flutter_clone_github/lib/common/style/icons.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -29,6 +29,30 @@ class GlobalIcons {
       IconData(0xe60e, fontFamily: GlobalIcons.FONT_FAMILY);
 
   static const String IC_MAIN_ADD = 'static/images/ic_main_add.png';
+  static const String MINE_ADD_FRIEND =
+      'static/images/icon_mine_add_friends.png';
+  static const String MINE_QRCODE_2 = 'static/images/icon_mine_qrcode_2.png';
+  static const String MINE_SETTING = 'static/images/icon_mine_setting.png';
+
+  static const String DEFAULT_IMG = 'static/images/img_default.png';
+  static const String AVATAR_DEFAULT = 'static/images/ic_avatar_default.png';
+
+  static const String HOME_VERTIFY = 'static/images/home_vertify.webp';
+  static const String HOME_MEMBER = 'static/images/home_memeber.webp';
+  static const String RIGHT_ARROW = 'static/images/icon_right_arrow.png';
+
+  static const String MINE_PIC = 'static/images/icon_mine_pic.png';
+  static const String MINE_STORY = 'static/images/icon_mine_story.png';
+  static const String MINE_ZAN = 'static/images/icon_mine_zan.png';
+  static const String MINE_FANS = 'static/images/icon_mine_fans.png';
+  static const String MINE_WALLET = 'static/images/icon_mine_wallet.png';
+  static const String MINE_GCHOOSE = 'static/images/icon_mine_gchoose.png';
+  static const String MINE_FANNEWS = 'static/images/icon_mine_fannews.png';
+  static const String MINE_CUSTOMSER =
+      'static/images/icon_mine_customservice.png';
+  static const String MINE_FREENET = 'static/images/icon_mine_freenet.png';
+  static const String MINE_SPORT = 'static/images/icon_mine_sport.png';
+  static const String MINE_DRAFT = 'static/images/icon_mine_draft.png';
 }
 
 class TabbarIcons {
