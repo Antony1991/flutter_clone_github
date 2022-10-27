@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clone_github/common/service/address.dart';
 import 'package:flutter_clone_github/common/style/icons.dart';
 import 'package:flutter_clone_github/common/style/styles.dart';
-import 'package:flutter_clone_github/page/login/login_webview_page.dart';
 import 'package:flutter_clone_github/provider/user_provider.dart';
-import 'package:flutter_clone_github/redux/actions/user_action.dart';
-import 'package:flutter_clone_github/redux/app_state.dart';
 import 'package:flutter_clone_github/router/navigator_utils.dart';
 import 'package:flutter_clone_github/router/router.dart';
 import 'package:flutter_clone_github/widgets/animated_background.dart';
 import 'package:flutter_clone_github/widgets/flex_button.dart';
 import 'package:flutter_clone_github/widgets/icon_input.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -187,22 +182,6 @@ mixin LoginBLoC on State<LoginPage> {
           .then((value) {
         NavigatorUtils.pushNamed(context, Routers.home);
       });
-    }
-  }
-
-  /// 安全登录
-  Future oauthLogin() async {
-    String? code = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                LoginWebviewPage(url: Address.getOAuthUrl(), title: '安全登录')));
-    print('######code$code');
-    if (code != null && code.isNotEmpty) {
-      if (mounted) {
-        StoreProvider.of<GithubState>(context)
-            .dispatch(LoginSuccessAction(code));
-      }
     }
   }
 }
