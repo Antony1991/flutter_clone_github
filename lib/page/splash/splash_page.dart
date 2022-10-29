@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 16:38:47
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-25 17:47:53
+ * @LastEditTime: 2022-10-29 22:42:01
  * @FilePath: /flutter_clone_github/lib/page/splash/splash_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -51,6 +51,7 @@ class _SplashPageState extends State<SplashPage> {
       });
     });
     Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
+      // LocalStorage.remove(Config.userInfoKey);
       userProvider.initUserInfo().then((value) {
         if (value != null) {
           NavigatorUtils.pushNamed(context, Routers.home);

@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-27 21:28:29
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-28 15:07:59
+ * @LastEditTime: 2022-10-29 22:11:41
  * @FilePath: /flutter_clone_github/lib/widgets/weiboitem/wb_item.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -256,14 +256,14 @@ class WbItem extends StatelessWidget {
                   height: 1,
                   color: Color(0xffdbdbdb),
                 ),
-                _rePraCom()
+                _rePraCom(),
+                new Container(
+                  margin: EdgeInsets.only(top: 10),
+                  height: 12,
+                  color: Color(0xffEFEFEF),
+                ),
               ],
             ),
-          ),
-          new Container(
-            margin: EdgeInsets.only(top: 10),
-            height: 12,
-            color: Color(0xffEFEFEF),
           ),
         ],
       ),
@@ -300,8 +300,8 @@ Widget _picGrid(List<String> picUrlList) {
     //         }), childCount: picUrlList.length),
     //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
     //             crossAxisCount: colLen)));
-    return Padding(
-      padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
+    return Container(
+      padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
       child: GridView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
