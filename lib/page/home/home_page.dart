@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 13:38:27
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-10-28 21:52:05
+ * @LastEditTime: 2022-11-02 19:11:29
  * @FilePath: /flutter_clone_github/lib/page/home/home_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clone_github/common/style/icons.dart';
 import 'package:flutter_clone_github/page/home/wb_follow_page.dart';
 import 'package:flutter_clone_github/page/home/wb_hot_page.dart';
+import 'dart:math' as math;
+
+import 'package:flutter_clone_github/router/navigator_utils.dart';
+import 'package:flutter_clone_github/router/router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,7 +71,9 @@ class _HomePageState extends State<HomePage>
         Align(
           alignment: Alignment.topRight,
           child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                NavigatorUtils.pushNamed(context, Routers.HomeWbPublish);
+              },
               icon:
                   Image.asset(GlobalIcons.IC_MAIN_ADD, width: 40, height: 40)),
         )
@@ -81,26 +87,46 @@ class _HomePageState extends State<HomePage>
     //   controller: tabController,
     //   children: const [WbFollowPage(), WbHotPage()],
     // ));
-    return Expanded(
-        flex: 1,
-        child: ExtendedNestedScrollView(
-            onlyOneScrollInBody: true,
-            headerSliverBuilder: ((context, innerBoxIsScrolled) => [
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 20,
-                    ),
-                  )
-                ]),
-            body: IndexedStack(
-              index: _tabIndex,
-              children: [
-                ExtendedVisibilityDetector(
-                    uniqueKey: Key('tab1'), child: WbFollowPage()),
-                ExtendedVisibilityDetector(
-                    child: WbHotPage(), uniqueKey: Key('tab2'))
-              ],
-            )));
+    // return Expanded(
+    //     flex: 1,
+    //     child: ExtendedNestedScrollView(
+    //         onlyOneScrollInBody: true,
+    //         headerSliverBuilder: ((context, innerBoxIsScrolled) => [
+    //               SliverPersistentHeader(
+    //                 pinned: true,
+    //                 floating: true,
+    //                 delegate: _SliverAppBarDelegate(
+    //                     child: _buildHeader(), maxHeight: 50, minHeight: 50),
+    //               )
+    //             ]),
+    //         body: IndexedStack(
+    //           index: _tabIndex,
+    //           children: [
+    //             ExtendedVisibilityDetector(
+    //                 uniqueKey: Key('tab1'), child: WbFollowPage()),
+    //             ExtendedVisibilityDetector(
+    //                 child: WbHotPage(), uniqueKey: Key('tab2'))
+    //           ],
+    //         )));
+    return ExtendedNestedScrollView(
+        onlyOneScrollInBody: true,
+        headerSliverBuilder: ((context, innerBoxIsScrolled) => [
+              SliverPersistentHeader(
+                pinned: true,
+                floating: true,
+                delegate: _SliverAppBarDelegate(
+                    child: _buildHeader(), maxHeight: 50, minHeight: 50),
+              )
+            ]),
+        body: IndexedStack(
+          index: _tabIndex,
+          children: [
+            ExtendedVisibilityDetector(
+                uniqueKey: Key('tab1'), child: WbFollowPage()),
+            ExtendedVisibilityDetector(
+                child: WbHotPage(), uniqueKey: Key('tab2'))
+          ],
+        ));
   }
 
   @override
@@ -140,13 +166,47 @@ class _HomePageState extends State<HomePage>
     //     ),
     //   ),
     // ));
+    // return Scaffold(
+    //   body: SafeArea(
+    //       child: DefaultTabController(
+    //           length: tabValues.length,
+    //           child: Column(
+    //             children: [_buildHeader(), _buildTabView()],
+    //           ))),
+    // );
     return Scaffold(
-      body: SafeArea(
-          child: DefaultTabController(
-              length: tabValues.length,
-              child: Column(
-                children: [_buildHeader(), _buildTabView()],
-              ))),
+      body: SafeArea(child: _buildTabView()),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
