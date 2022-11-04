@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-11-02 18:43:34
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-11-02 21:13:12
+ * @LastEditTime: 2022-11-03 19:06:44
  * @FilePath: /flutter_clone_github/lib/page/home/wb_publish_page/wb_publish_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,6 +10,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_clone_github/common/style/styles.dart';
 import 'package:flutter_clone_github/common/util/toast_util.dart';
+import 'package:flutter_clone_github/router/navigator_utils.dart';
 import 'package:flutter_clone_github/widgets/wb_appbar.dart';
 
 class WbPublishPage extends StatefulWidget {
@@ -48,7 +49,11 @@ class _WbPublishPageState extends State<WbPublishPage> with WbPublishBLoC {
     return Scaffold(
       appBar: WbAppbar(
         title: '发微博',
-        leading: TextButton(onPressed: () {}, child: Text('取消')),
+        leading: TextButton(
+            onPressed: () {
+              NavigatorUtils.pop(context);
+            },
+            child: Text('取消')),
         actions: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 13:38:27
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-11-02 19:11:29
+ * @LastEditTime: 2022-11-03 10:24:33
  * @FilePath: /flutter_clone_github/lib/page/home/home_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage>
                 pinned: true,
                 floating: true,
                 delegate: _SliverAppBarDelegate(
-                    child: _buildHeader(), maxHeight: 50, minHeight: 50),
+                    child: _buildHeader(), maxHeight: 51, minHeight: 51),
               )
             ]),
         body: IndexedStack(

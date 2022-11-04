@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-18 13:38:27
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-11-02 15:27:40
+ * @LastEditTime: 2022-11-03 11:21:04
  * @FilePath: /flutter_clone_github/lib/page/home/home_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -20,25 +20,13 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  late PageController pageController;
   int _currentPage = 0;
-
-  @override
-  void initState() {
-    pageController = PageController(initialPage: _currentPage);
-    super.initState();
-  }
-
-  /// 页面切换时
-  void onPageChanged(int page) {
-    setState(() {
-      _currentPage = page;
-    });
-  }
 
   /// 跳转页面
   void bottomOnTap(int page) {
-    pageController.jumpToPage(page);
+    setState(() {
+      _currentPage = page;
+    });
   }
 
   BottomNavigationBarItem _buildNavBottomBarItem(icon, activeIcon, label) {
@@ -59,10 +47,8 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: onPageChanged,
+      body: IndexedStack(
+        index: _currentPage,
         children: const [HomePage(), VideoPage(), MinePage()],
       ),
       bottomNavigationBar: BottomNavigationBar(

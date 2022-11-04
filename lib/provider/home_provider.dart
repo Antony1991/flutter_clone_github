@@ -2,7 +2,7 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-27 14:51:15
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-11-02 11:58:57
+ * @LastEditTime: 2022-11-03 18:07:30
  * @FilePath: /flutter_clone_github/lib/provider/home_provider.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,16 +25,23 @@ class HomeProvider extends ChangeNotifier {
   List<WbComment> wbCommentList = [];
 
   /// 定义一个存储微博数据的列表
-  Future getWeiBoList(FormData formData) async {
-    ResultData? res = await httpManager.netFetch(
-        Address.getWeiBo, formData, null, Options(method: 'post'));
-    weiboList = [];
+  Future getWeiBoList(Map<String, dynamic> formData) async {
+    ResultData? res = await httpManager.netFetch(Address.getWeiBo,
+        FormData.fromMap(formData), null, Options(method: 'post'));
     print('status#############${res?.data}');
     if (res?.status == 200) {
       var json = res?.data;
-      json['list'].forEach((item) {
-        weiboList.add(WbInfo.fromJson(item));
-      });
+      if (formData['pageNum'] == 1) {
+        weiboList = [];
+        json['list'].forEach((item) {
+          weiboList.add(WbInfo.fromJson(item));
+        });
+      } else {
+        json['list'].forEach((item) {
+          weiboList.add(WbInfo.fromJson(item));
+        });
+        print("######${weiboList.length}");
+      }
     }
     notifyListeners();
     return weiboList;
