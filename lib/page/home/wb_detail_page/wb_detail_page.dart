@@ -2,20 +2,21 @@
  * @Author: Antony vic19910108@gmail.com
  * @Date: 2022-10-28 20:24:38
  * @LastEditors: Antony vic19910108@gmail.com
- * @LastEditTime: 2022-11-04 20:54:16
+ * @LastEditTime: 2022-11-07 16:49:59
  * @FilePath: /flutter_clone_github/lib/page/home/wb_detail_page/wb_detail_page.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
-import 'package:date_format/date_format.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clone_github/common/style/styles.dart';
 import 'package:flutter_clone_github/common/util/easy_refresh_util.dart';
+import 'package:flutter_clone_github/model/WbComment.dart';
 import 'package:flutter_clone_github/model/WbForward.dart';
 import 'package:flutter_clone_github/model/WbInfo.dart';
+import 'package:flutter_clone_github/page/home/wb_detail_page/widgets/comment_item.dart';
+import 'package:flutter_clone_github/page/home/wb_detail_page/widgets/forward_item.dart';
 import 'package:flutter_clone_github/provider/home_provider.dart';
 import 'package:flutter_clone_github/widgets/wb_appbar.dart';
 import 'package:flutter_clone_github/widgets/weiboitem/wb_detail_top.dart';
@@ -44,32 +45,12 @@ class _WbDetailPageState extends State<WbDetailPage>
     final WbInfo data = ModalRoute.of(context)!.settings.arguments as WbInfo;
     FormData formData = FormData.fromMap(
         {"pageNum": 1, "pageSize": 10, "weiboid": data.weiboId});
+    if (_tabIndex == 0) {
+      return Provider.of<HomeProvider>(context, listen: false)
+          .getWbForwardList(formData);
+    }
     return Provider.of<HomeProvider>(context, listen: false)
-        .getWbForwardList(formData);
-  }
-
-  /// 点赞
-  Widget _mForward(WbForward wbForward) {
-    return ListTile(
-      // leading: WbAvatar(wbInfo: data),
-      title: Text(wbForward.fromuname,
-          style: TextStyle(
-              color: Color(0xff636363),
-              fontWeight: FontWeight.normal,
-              fontSize: 12)),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(wbForward.content,
-              style: TextStyle(color: GlobalColors.primaryDarkValue)),
-          Text(
-              formatDate(
-                  DateTime.fromMillisecondsSinceEpoch(wbForward.createtime),
-                  [mm, '-', dd]),
-              style: TextStyle(fontSize: 11))
-        ],
-      ),
-    );
+        .getWbCommentList(formData);
   }
 
   /// 转发
@@ -119,7 +100,9 @@ class _WbDetailPageState extends State<WbDetailPage>
                                   WbForward wbForward = context
                                       .watch<HomeProvider>()
                                       .wbForwardList[index];
-                                  return _buildItem(wbForward);
+
+                                  /// 渲染转发列表
+                                  return ForwardItem(wbForward);
                                 }),
                                         childCount: context
                                             .watch<HomeProvider>()
@@ -135,8 +118,15 @@ class _WbDetailPageState extends State<WbDetailPage>
                                 SliverList(
                                     delegate: SliverChildBuilderDelegate(
                                         (context, index) {
-                                  return Text('data');
-                                }, childCount: 20))
+                                  WbComment wbComment = context
+                                      .watch<HomeProvider>()
+                                      .wbCommentList[index];
+                                  return CommentItem(wbComment);
+                                },
+                                        childCount: context
+                                            .watch<HomeProvider>()
+                                            .wbCommentList
+                                            .length))
                               ],
                             ),
                             uniqueKey: Key('tab2'))
@@ -144,29 +134,6 @@ class _WbDetailPageState extends State<WbDetailPage>
                     ],
                   )));
         }));
-  }
-
-  _buildItem(wbForward) {
-    return ListTile(
-      // leading: WbAvatar(wbInfo: wbItemInfo),
-      title: Text(wbForward.fromuname,
-          style: TextStyle(
-              color: Color(0xff636363),
-              fontWeight: FontWeight.normal,
-              fontSize: 12)),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(wbForward.content,
-              style: TextStyle(color: GlobalColors.primaryDarkValue)),
-          Text(
-              formatDate(
-                  DateTime.fromMillisecondsSinceEpoch(wbForward.createtime),
-                  [mm, '-', dd]),
-              style: TextStyle(fontSize: 11))
-        ],
-      ),
-    );
   }
 
   /// 渲染tabbar
@@ -186,6 +153,7 @@ class _WbDetailPageState extends State<WbDetailPage>
         onTap: (int value) {
           setState(() {
             _tabIndex = value;
+            initForwardData();
           });
         },
         tabs: [
